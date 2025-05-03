@@ -4,7 +4,7 @@ const LIFF_EVENT = '2006974351-8XYV44Ad'; // LIFF ID EVENT
 const LIFF_HISTORY = '2006974351-BDnJooQa'; // LIFF ID HISTORY 
 
 // กำหนด API URL (Admin)
-const ADMIN_URL = "https://script.google.com/macros/s/AKfycbz_yeToniZMtx1-tZCF62YI9eWV6IGQnHYBQyrdnd2nOgJx2dhyDg3z-bsJmQ8kvls6IQ/exec";
+const ADMIN_URL = "https://script.google.com/macros/s/AKfycbxmVGoMjXzA8lvBOKpFAXyPCEj4q9nl1MsL_i_691NynRpDXVnbvBYFftgD7l2iSUw/exec";
 const MEMBER_URL = 'https://script.google.com/macros/s/AKfycbzF2GYdAm89Gjb38mKCQ2tKhdPpYFgkzsAYlnv03Ow34MEn5_ZbsQdpc7gSlRGIPwbiTg/exec';
 const ADDEVENT_URL = "https://script.google.com/macros/s/AKfycbx-pnhaEboYgy2OFWn4qVcjM3_RcVyoR9H6T-ZohS9Ndi3cI7SLa7-XVMlggN-ZOImS/exec";
 
