@@ -9,4 +9,4 @@ const MEMBER_URL = 'https://script.google.com/macros/s/AKfycbzF2GYdAm89Gjb38mKCQ
 const ADDEVENT_URL = "https://script.google.com/macros/s/AKfycbx-pnhaEboYgy2OFWn4qVcjM3_RcVyoR9H6T-ZohS9Ndi3cI7SLa7-XVMlggN-ZOImS/exec";
 
 // กำหนด API URL (user)
-const EVENT_URL = 'https://script.google.com/macros/s/AKfycbxA__GlDzti5DcMB64qJcOZJ0ME2hV7bY_Qk8y-QUmjsBRE7tUDr9UWsWnOehEYi5iu/exec';
+const EVENT_URL = 'https://script.google.com/macros/s/AKfycbz8Dl9oWSwjv-3T4HerD4LAnejTrrf5zLNObe0nOYinCYIHR6eRdmtBpAgaIH659dI8Pg/exec';
