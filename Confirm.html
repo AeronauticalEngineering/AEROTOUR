@@ -37,6 +37,9 @@
     };
 
     async function submitConfirm(status, id) {
+      const loading = document.getElementById("loadingOverlay");
+      loading.classList.remove("hidden");
+
       const apiUrl = `https://script.google.com/macros/s/AKfycbxmVGoMjXzA8lvBOKpFAXyPCEj4q9nl1MsL_i_691NynRpDXVnbvBYFftgD7l2iSUw/exec?method=updateConfirmData&id=${id}&confirmStatus=${status}`;
       try {
         const res = await fetch(apiUrl);
@@ -46,12 +49,20 @@
       } catch (err) {
         alert("❌ ไม่สามารถส่งข้อมูลได้");
         console.error(err);
+      } finally {
+        loading.classList.add("hidden");
       }
     }
   </script>
 </head>
 <body class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl shadow-lg max-w-sm w-full overflow-hidden">
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="text-white text-xl font-medium">กำลังส่งข้อมูล...</div>
+  </div>
+
+  <!-- Main Card -->
+  <div class="bg-white rounded-2xl shadow-lg max-w-sm w-full overflow-hidden relative">
     <!-- Header -->
     <div class="bg-gradient-to-r from-blue-900 to-orange-400 p-4">
       <h2 class="text-white text-lg font-semibold flex items-center">
