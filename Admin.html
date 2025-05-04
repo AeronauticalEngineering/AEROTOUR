@@ -242,8 +242,20 @@
     let tableData = [];
     let eventCaps = {};  // เก็บ capacity ของแต่ละ eventId
 
-    function startLoading() { $('#loadingOverlay').removeClass('hidden'); }
-    function stopLoading() { $('#loadingOverlay').addClass('hidden'); }
+    // แก้ไขเป็น
+    function startLoading() {
+      // แสดง overlay
+      $('#loading-overlay').removeClass('hidden');
+      // ปิดใช้งานปุ่มทุกตัวกันกดซ้ำ
+      $('button').prop('disabled', true);
+    }
+    
+    function stopLoading() {
+      // ซ่อน overlay
+      $('#loading-overlay').addClass('hidden');
+      // เปิดใช้งานปุ่มกลับ
+      $('button').prop('disabled', false);
+    }
 
     // Fetch + แปลงข้อมูล
     async function fetchData() {
