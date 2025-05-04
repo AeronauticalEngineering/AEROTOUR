@@ -247,14 +247,12 @@
       // แสดง overlay
       $('#loading-overlay').removeClass('hidden');
       // ปิดใช้งานปุ่มทุกตัวกันกดซ้ำ
-      $('button').prop('disabled', true);
     }
     
     function stopLoading() {
       // ซ่อน overlay
       $('#loading-overlay').addClass('hidden');
       // เปิดใช้งานปุ่มกลับ
-      $('button').prop('disabled', false);
     }
 
     // Fetch + แปลงข้อมูล
