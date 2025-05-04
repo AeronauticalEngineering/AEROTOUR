@@ -250,8 +250,20 @@
     let tableData = [];
     let eventCaps = {};
 
-    function startLoading() { $('#loading-overlay').removeClass('hidden'); }
-    function stopLoading() { $('#loading-overlay').addClass('hidden'); }
+// แก้ไขเป็น
+function startLoading() {
+  // แสดง overlay
+  $('#loading-overlay').removeClass('hidden');
+  // ปิดใช้งานปุ่มทุกตัวกันกดซ้ำ
+  $('button').prop('disabled', true);
+}
+
+function stopLoading() {
+  // ซ่อน overlay
+  $('#loading-overlay').addClass('hidden');
+  // เปิดใช้งานปุ่มกลับ
+  $('button').prop('disabled', false);
+}
 
     async function fetchData() {
       startLoading();
