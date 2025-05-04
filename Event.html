@@ -552,74 +552,80 @@ function showModal(msg, onOk) {
 
 
 
-    async function submitBooking() {
-      showLoading();
+  async function submitBooking() {
+  const btn = document.getElementById('submitBookingBtn');
+  btn.disabled = true;
+  btn.textContent = 'กำลังบันทึก...';
+  btn.classList.add('cursor-not-allowed', 'bg-gray-400');
 
-      // Validate required fields
-      const requiredFields = [
-        { id: 'bookRenterName', label: 'ชื่อ-สกุล' },
-        { id: 'bookRenterNameEn', label: 'ชื่อภาษาอังกฤษ' },
-        { id: 'bookCitizenId', label: 'เลขประจำตัว' },
-        { id: 'bookAddress', label: 'ที่อยู่' },
-        { id: 'bookPhone', label: 'เบอร์ติดต่อ' },
-        { id: 'bookEmail', label: 'อีเมล' },
-        { id: 'bookEventId', label: 'รหัสกิจกรรม' },
-        { id: 'bookEventName', label: 'ชื่อกิจกรรม' },
-        { id: 'bookEventDate', label: 'วันที่' },
-        { id: 'bookEventTime', label: 'เวลา' },
-        { id: 'bookRenterName', label: 'ชื่อ' },
-        { id: 'bookUserLineId', label: 'LINE ID' },
-      ];
+  showLoading();
 
-      for (const field of requiredFields) {
-        const val = document.getElementById(field.id).value.trim();
-        if (!val) {
-          hideLoading();
-          showModal(`กรุณากรอก ${field.label}`);
-          el.focus();
-          return;
-        }
-      }
-
-      const payload = {
-        eventId: document.getElementById('bookEventId').value,
-        eventName: document.getElementById('bookEventName').value,
-        category: document.getElementById('bookEventCategory').value,
-        price: document.getElementById('bookEventPrice').value,
-        date: document.getElementById('bookEventDate').value,
-        time: document.getElementById('bookEventTime').value,
-        queue: "1", // คิวตายตัว
-        renterName: document.getElementById('bookRenterName').value,
-        renterNameEn: document.getElementById('bookRenterNameEn').value,
-        citizenId: document.getElementById('bookCitizenId').value,
-        address: document.getElementById('bookAddress').value,
-        phone: document.getElementById('bookPhone').value,
-        email: document.getElementById('bookEmail').value,
-        note: document.getElementById('bookNote').value,
-        userLineId: document.getElementById('bookUserLineId').value
-      };
-
-      try {
-        await fetch(EVENT_URL, { method: 'POST', body: JSON.stringify(payload) });
-        await fetchAllEvents();
-
-        // แสดง toast แล้วปิด LIFF หลัง 500ms
-        showModal('จองสำเร็จ 🎉', () => {
-          if (liff.isInClient()) {
-            liff.closeWindow();
-          } else {
-            showStep('step1');
-          }
-        });
-      } catch (e) {
-        console.error(e);
-        hideLoading();
-        // ไม่ต้องปิด LIFF ในกรณี error
-        showModal('ไม่สามารถจองได้ กรุณาลองใหม่');
-      } finally {
-        hideLoading();
-      }
+  // Validate required fields
+  const requiredFields = [
+    { id: 'bookRenterName', label: 'ชื่อ-สกุล' },
+    { id: 'bookRenterNameEn', label: 'ชื่อภาษาอังกฤษ' },
+    { id: 'bookCitizenId', label: 'เลขประจำตัว' },
+    { id: 'bookAddress', label: 'ที่อยู่' },
+    { id: 'bookPhone', label: 'เบอร์ติดต่อ' },
+    { id: 'bookEmail', label: 'อีเมล' },
+    { id: 'bookEventId', label: 'รหัสกิจกรรม' },
+    { id: 'bookEventName', label: 'ชื่อกิจกรรม' },
+    { id: 'bookEventDate', label: 'วันที่' },
+    { id: 'bookEventTime', label: 'เวลา' },
+    { id: 'bookRenterName', label: 'ชื่อ' },
+    { id: 'bookUserLineId', label: 'LINE ID' },
+  ];
+  for (const field of requiredFields) {
+    const val = document.getElementById(field.id).value.trim();
+    if (!val) {
+      hideLoading();
+      btn.disabled = false;
+      btn.textContent = 'บันทึกการจอง';
+      btn.classList.remove('cursor-not-allowed', 'bg-gray-400');
+      showModal(`กรุณากรอก ${field.label}`);
+      return;
     }
+  }
+
+  const payload = {
+    eventId: document.getElementById('bookEventId').value,
+    eventName: document.getElementById('bookEventName').value,
+    category: document.getElementById('bookEventCategory').value,
+    price: document.getElementById('bookEventPrice').value,
+    date: document.getElementById('bookEventDate').value,
+    time: document.getElementById('bookEventTime').value,
+    queue: "1", // คิวตายตัว
+    renterName: document.getElementById('bookRenterName').value,
+    renterNameEn: document.getElementById('bookRenterNameEn').value,
+    citizenId: document.getElementById('bookCitizenId').value,
+    address: document.getElementById('bookAddress').value,
+    phone: document.getElementById('bookPhone').value,
+    email: document.getElementById('bookEmail').value,
+    note: document.getElementById('bookNote').value,
+    userLineId: document.getElementById('bookUserLineId').value
+  };
+
+  try {
+    await fetch(EVENT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    await fetchAllEvents();
+    showModal('จองสำเร็จ 🎉', () => {
+      if (liff.isInClient()) {
+        liff.closeWindow();
+      } else {
+        showStep('step1');
+      }
+    });
+  } catch (e) {
+    console.error(e);
+    showModal('ไม่สามารถจองได้ กรุณาลองใหม่');
+  } finally {
+    hideLoading();
+    btn.disabled = false;
+    btn.textContent = 'บันทึกการจอง';
+    btn.classList.remove('cursor-not-allowed', 'bg-gray-400');
+  }
+}
+
   </script>
 </body>
 
