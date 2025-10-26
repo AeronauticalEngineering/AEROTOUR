@@ -341,40 +341,41 @@ function stopLoading() {
       for (const [eid, items] of Object.entries(groups)) {
         // ข้อมูล header ของกลุ่ม
         const h = items[0];
-        const booked = items.length;
+        // กรองรายการที่ไม่ใช่สถานะ "ยกเลิก" ก่อนนับจำนวนจอง
+        const booked = items.filter(it => it.status !== 'ยกเลิก').length;
         const cap = eventCaps[eid] || 0;
 
         // สร้างกล่องการ์ด
         const box = $(`
-      <div class="bg-white rounded-xl shadow p-4">
-        <div class="flex justify-between items-center">
-          <div>
-            <span class="font-bold text-lg">${h.activityName}</span><br>
-            <span class="text-sm text-gray-600">${h.date} ${h.time}</span>
-            <span class="ml-2 text-sm text-gray-500">(${booked}/${cap})</span>
-          </div>
-          <div class="flex space-x-2">
-            <button class="bg-[#0A164D] text-white p-2 rounded" onclick="openGroupJoinModal('${eid}')">
-              <span class="text-sm p-2">แจ้งการยืนยัน</span>
-            </button>
-            <button class="bg-[#EB8012] text-white p-2 rounded" onclick="openGroupConfirmModal('${eid}')">
-              <span class="text-sm p-2">เปิด-ปิดกิจกรรม</span>
-            </button>
-          </div>
+    <div class="bg-white rounded-xl shadow p-4">
+      <div class="flex justify-between items-center">
+        <div>
+          <span class="font-bold text-lg">${h.activityName}</span><br>
+          <span class="text-sm text-gray-600">${h.date} ${h.time}</span>
+          <span class="ml-2 text-sm text-gray-500">(${booked}/${cap})</span>
         </div>
-        <table class="w-full text-sm mt-4">
-          <thead>
-            <tr class="bg-gray-100">
-              <th class="px-2 py-1">ชื่อ-สกุล</th>
-              <th class="px-2 py-1">สถานะ</th>
-              <th class="px-2 py-1">สถานะยืนยัน</th>
-              <th class="px-2 py-1"></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <div class="flex space-x-2">
+          <button class="bg-[#0A164D] text-white p-2 rounded" onclick="openGroupJoinModal('${eid}')">
+            <span class="text-sm p-2">แจ้งการยืนยัน</span>
+          </button>
+          <button class="bg-[#EB8012] text-white p-2 rounded" onclick="openGroupConfirmModal('${eid}')">
+            <span class="text-sm p-2">เปิด-ปิดกิจกรรม</span>
+          </button>
+        </div>
       </div>
-    `);
+      <table class="w-full text-sm mt-4">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-2 py-1">ชื่อ-สกุล</th>
+            <th class="px-2 py-1">สถานะ</th>
+            <th class="px-2 py-1">สถานะยืนยัน</th>
+            <th class="px-2 py-1"></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  `);
 
         // เติมรายการแต่ละคนลงใน tbody
         items.forEach(it => {
