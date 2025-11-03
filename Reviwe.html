@@ -31,11 +31,11 @@
   <div class="max-w-md mx-auto glass p-6 rounded-lg shadow">
     <h1 class="text-xl font-bold text-[#0A164D] mb-4">แบบประเมินกิจกรรม</h1>
     <form id="feedbackForm">
-      <input type="hidden" id="roomId" name="roomId" />
-      <input type="hidden" id="userIdLine" name="userIdLine" />
+      <input type="hidden" id="eventId" name="eventId" />
+      <input type="hidden" id="useridline" name="useridline" />
       <div class="mb-3">
         <label class="block text-gray-700">ชื่อกิจกรรม</label>
-        <input type="text" id="roomName" name="roomName" class="w-full p-2 text-white bg-[#071d4a] rounded-lg" readonly />
+        <input type="text" id="activity" name="activity" class="w-full p-2 text-white bg-[#071d4a] rounded-lg" readonly />
       </div>
       <div class="mb-3">
         <label class="block text-gray-700">ชื่อผู้เข้าร่วม</label>
@@ -165,23 +165,23 @@
     const p = new URLSearchParams(
       decodeURIComponent(new URLSearchParams(window.location.search).get("liff.state")||"").replace(/^\?/, "")
     );
-    document.getElementById("roomId").value    = p.get("eventId")    || "";
-    document.getElementById("roomName").value  = p.get("activity")   || "";
-    document.getElementById("bookerName").value= p.get("bookerName") || "";
-    document.getElementById("date").value      = p.get("date")       || "";
-    document.getElementById("time").value      = p.get("time")       || "";
-    document.getElementById("userIdLine").value= p.get("useridline") || "";
+    document.getElementById("eventId").value    = p.get("eventId")    || "";
+    document.getElementById("activity").value   = p.get("activity")   || "";
+    document.getElementById("bookerName").value = p.get("bookerName") || "";
+    document.getElementById("date").value       = p.get("date")       || "";
+    document.getElementById("time").value       = p.get("time")       || "";
+    document.getElementById("useridline").value = p.get("useridline") || "";
 
     document.getElementById("feedbackForm").addEventListener("submit", e => {
       e.preventDefault();
       const data = {
         method: "submitFeedback",
-        roomId:    p.get("eventId"),
-        roomName:  p.get("activity"),
-        bookerName:p.get("bookerName"),
-        date:      p.get("date"),
-        time:      p.get("time"),
-        userIdLine:p.get("useridline"),
+        eventId:    p.get("eventId"),
+        activity:   p.get("activity"),
+        bookerName: p.get("bookerName"),
+        date:       p.get("date"),
+        time:       p.get("time"),
+        useridline: p.get("useridline"),
         q1: document.querySelector('input[name="q1"]:checked')?.value,
         q2: document.querySelector('input[name="q2"]:checked')?.value,
         q3: document.querySelector('input[name="q3"]:checked')?.value,
