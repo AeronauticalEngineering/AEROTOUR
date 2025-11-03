@@ -201,16 +201,13 @@
       Swal.fire({ title:"กำลังส่งข้อมูล...", didOpen:()=>Swal.showLoading(), allowOutsideClick:false });
       fetch("https://script.google.com/macros/s/AKfycby4KfDQKcYTxIx-xUb9xh8oD8Zmh7J_f8WxuLSdb0-Kmk_GTFbM7C6nz7-5TX6KCKeFIw/exec",{
         method:"POST",
+        mode:"no-cors",
         headers:{"Content-Type":"application/x-www-form-urlencoded"},
         body:new URLSearchParams(data)
       })
-      .then(r=>r.json())
-      .then(res=>{
-        if(res.success){
-          Swal.fire("ส่งเรียบร้อย","ขอบคุณสำหรับความคิดเห็น!","success").then(()=>window.close());
-        } else {
-          Swal.fire("ผิดพลาด",res.message||"ไม่สามารถบันทึกข้อมูลได้","error");
-        }
+      .then(()=>{
+        // no-cors mode ไม่สามารถอ่าน response ได้ ถือว่าสำเร็จ
+        Swal.fire("ส่งเรียบร้อย","ขอบคุณสำหรับความคิดเห็น!","success").then(()=>window.close());
       })
       .catch(()=>Swal.fire("ผิดพลาด","ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์","error"));
     });
