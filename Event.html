@@ -87,6 +87,37 @@
       /* bg-red-600 */
       color: white;
     }
+
+    /* History Button Style */
+    .history-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 40;
+      box-shadow: 0 4px 15px rgba(235, 128, 18, 0.4);
+      transition: all 0.3s ease;
+    }
+    .history-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(235, 128, 18, 0.6);
+    }
+    .history-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Logo Style */
+    .logo-top {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 40;
+      width: 50px;
+      height: auto;
+      transition: all 0.3s ease;
+    }
+    .logo-top:hover {
+      transform: scale(1.05);
+    }
   </style>
 </head>
 
@@ -111,6 +142,17 @@
       <button id="modalOk" class="w-full py-2 rounded-lg bg-[#071d4a] text-white">ตกลง</button>
     </div>
   </div>
+
+  <!-- Logo Top Left -->
+  <img src="https://lh5.googleusercontent.com/d/1MoIcHrUlOtTV46t5CI3bYwT0cGQBh7PB" alt="AEROTOUR Logo" class="logo-top">
+
+  <!-- History Button -->
+  <button id="historyBtn" class="history-btn bg-gradient-to-r from-[#EB8012] to-[#ff9933] text-white px-4 py-2 rounded-full flex items-center gap-2 font-medium">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <span>ประวัติการจอง</span>
+  </button>
 
 
   <!-- STEP 1: เลือกกิจกรรม -->
@@ -278,6 +320,9 @@
       document.getElementById('detailBookBtn').onclick = populateBookingForm;
       document.getElementById('backToStep1').onclick = () => showStep('step1');
       document.getElementById('backToStep2').onclick = () => showStep('step2');
+      
+      // History Button Event
+      document.getElementById('historyBtn').onclick = openHistoryPage;
     });
 
     function showLoading() { document.getElementById('loadingOverlay').classList.remove('hidden'); }
@@ -625,6 +670,20 @@ function showModal(msg, onOk) {
     btn.classList.remove('cursor-not-allowed', 'bg-gray-400');
   }
 }
+
+    // Function to open History page
+    function openHistoryPage() {
+      if (liff.isInClient()) {
+        // เปิดใน LIFF Browser ภายใน LINE
+        liff.openWindow({
+          url: `https://liff.line.me/${LIFF_HISTORY}`,
+          external: false
+        });
+      } else {
+        // เปิดในแท็บใหม่ถ้าเปิดจาก browser
+        window.open(`https://liff.line.me/${LIFF_HISTORY}`, '_blank');
+      }
+    }
 
   </script>
 </body>
