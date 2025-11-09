@@ -5,135 +5,109 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Admin จัดการจองกิจกรรม</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <title>Admin Mobile - AEROTOUR</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- config.js สำหรับ API_URL -->
   <script src="config.js"></script>
-  <style>
-    :root {
-        --primary-color: #ffffff;
-        --secondary-color: #0A164D;
-        --accent-color: #EB8012;
-    }
-
-    .flying-image { position: absolute; padding-top: -20px; width: 100px; animation: fly 5s linear infinite, tilt 1s ease-in-out infinite alternate; }
-    @keyframes fly { 0% { transform: translate(0, 0); } 25% { transform: translate(100px, -50px); } 50% { transform: translate(200px, 50px); } 75% { transform: translate(100px, 100px); } 100% { transform: translate(0, 0); } }
-    @keyframes tilt { 0% { transform: rotate(5deg);  } 100% { transform: rotate(-5deg); } }
-
-    select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-    }
-    #toast.error {
-        background-color: #dc2626;
-        color: white;
-    }
-</style>
 </head>
 
-<body class="bg-gradient-to-b from-blue-100 via-orange-100 to-white min-h-screen relative bg-fixed p-4">
-  <!-- Loading Overlay -->
-      <!-- Loading Overlay -->
-      <div id="loadingOverlay" class="fixed inset-0 flex items-center justify-center bg-[#F5F8FD] z-50">
-        <div class="text-center">
-            <div class="relative flex w-48">
-                <div class="flex-1 mb-40">
-                    <img src="https://lh5.googleusercontent.com/d/1MoIcHrUlOtTV46t5CI3bYwT0cGQBh7PB" alt="Flying Object"
-                        class="flying-image w-48 mx-auto">
-                </div>
-            </div>
-        </div>
-    </div>
-  <div class="mb-4 flex justify-between sm:flex-row gap-4">
-    <div>
-      <label class="block text-sm mb-1">สถานะ</label>
-      <select id="filter-status" class="border px-3 py-2 bg-white rounded-xl w-40 h-10 appearance-none">
-        <option value="">ทั้งหมด</option>
-        <option value="จอง">จอง</option>
-        <option value="เข้าร่วม">เข้าร่วม</option>
-        <option value="ยกเลิก">ยกเลิก</option>
-        <option value="จบกิจกรรม">จบกิจกรรม</option> <!-- เพิ่มตรงนี้ -->
-      </select>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-4 sticky top-0 z-40 shadow-lg">
+    <h1 class="text-xl font-bold">AEROTOUR Admin</h1>
+    <p class="text-xs opacity-90">จัดการจองกิจกรรม</p>
+  </header>
+  <!-- Main Content -->
+  <main class="p-4">
 
-    </div>
-    <div>
-      <label class="block text-sm mb-1">วันที่</label>
-      <input type="date" id="filter-date" class="border px-3 py-2 bg-white rounded-xl w-40 h-10"
-        style="-webkit-appearance:none; -moz-appearance:none; appearance:none;">
-    </div>
-  </div>
 
-  <!-- Container สำหรับกลุ่มกิจกรรม -->
-  <div id="groups-container" class="space-y-6"></div>
+    <!-- Filters -->
+    <div class="bg-white rounded-xl shadow-sm p-3 mb-4">
+      <div class="text-xs font-medium text-gray-700 mb-2">ตัวกรอง:</div>
+      <div class="grid grid-cols-2 gap-2">
+        <select id="filter-status" class="border border-gray-300 px-3 py-2 bg-white rounded-lg text-sm focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none">
+          <option value="">สถานะทั้งหมด</option>
+          <option value="จอง">จอง</option>
+          <option value="เข้าร่วม">เข้าร่วม</option>
+          <option value="ยกเลิก">ยกเลิก</option>
+          <option value="จบกิจกรรม">จบกิจกรรม</option>
+        </select>
+        <input type="date" id="filter-date" class="border border-gray-300 px-3 py-2 bg-white rounded-lg text-sm focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none">
+      </div>
+    </div>
+
+    <!-- Groups Container -->
+    <div id="groups-container" class="space-y-3"></div>
+  </main>
   <!-- Modals สำหรับอัพเดทรายการเดี่ยว -->
   <!-- 1. ชำระเงิน -->
-  <div id="update-payment-modal"
-    class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-4 rounded-xl w-11/12 max-w-md">
-      <h2 class="text-lg font-bold mb-4">อัพเดทการชำระเงิน</h2>
-      <form id="update-payment-form">
+  <div id="update-payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl transform transition-all">
+      <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-4 rounded-t-2xl">
+        <h2 class="text-lg font-bold">อัพเดทการชำระเงิน</h2>
+      </div>
+      <form id="update-payment-form" class="p-4">
         <input type="hidden" id="payment-update-id">
-        <div class="mb-2">
-          <label class="block text-sm">การชำระเงิน</label>
-          <select id="update-payment-select" class="w-full border px-2 py-1 rounded">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">สถานะการชำระเงิน</label>
+          <select id="update-payment-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none">
             <option value="ชำระเงินแล้ว">ชำระเงินแล้ว</option>
             <option value="รอการชำระเงิน">รอการชำระเงิน</option>
+            <option value="แจ้งส่งหลักฐาน">แจ้งส่งหลักฐาน</option>
+            <option value="รอตรวจสอบ">รอตรวจสอบ</option>
             <option value="ไม่มีค่าใช้จ่าย">ไม่มีค่าใช้จ่าย</option>
           </select>
         </div>
-        <div class="flex justify-end">
-          <button type="button" onclick="closePaymentModal()"
-            class="bg-gray-500 text-white py-1 px-3 rounded mr-2">ยกเลิก</button>
-          <button type="submit" class="bg-blue-500 text-white py-1 px-3 rounded">บันทึก</button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closePaymentModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium">ยกเลิก</button>
+          <button type="submit" class="flex-1 bg-gradient-to-r from-[#EB8012] to-[#ff9933] text-white px-4 py-2 rounded-lg font-medium shadow-lg">บันทึก</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- 2. แจ้งเข้าร่วม -->
-  <div id="update-join-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-4 rounded-xl w-11/12 max-w-md">
-      <h2 class="text-lg font-bold mb-4">อัพเดทแจ้งเข้าร่วม</h2>
-      <form id="update-join-form">
+  <div id="update-join-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl transform transition-all">
+      <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-4 rounded-t-2xl">
+        <h2 class="text-lg font-bold">อัพเดทแจ้งเข้าร่วม</h2>
+      </div>
+      <form id="update-join-form" class="p-4">
         <input type="hidden" id="join-update-id">
-        <div class="mb-2">
-          <label class="block text-sm">แจ้งเข้าร่วม</label>
-          <select id="update-join-select" class="w-full border px-2 py-1 rounded">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">สถานะแจ้งเข้าร่วม</label>
+          <select id="update-join-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none">
             <option value="แจ้งแล้ว">แจ้งแล้ว</option>
             <option value="ยังไม่แจ้ง">ยังไม่แจ้ง</option>
           </select>
         </div>
-        <div class="flex justify-end">
-          <button type="button" onclick="closeJoinModal()"
-            class="bg-gray-500 text-white py-1 px-3 rounded mr-2">ยกเลิก</button>
-          <button type="submit" class="bg-blue-500 text-white py-1 px-3 rounded">บันทึก</button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closeJoinModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium">ยกเลิก</button>
+          <button type="submit" class="flex-1 bg-gradient-to-r from-[#EB8012] to-[#ff9933] text-white px-4 py-2 rounded-lg font-medium shadow-lg">บันทึก</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- 3. สถานะยืนยัน -->
-  <div id="update-confirm-modal"
-    class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-4 rounded-xl w-11/12 max-w-md">
-      <h2 class="text-lg font-bold mb-4">อัพเดทสถานะยืนยัน</h2>
-      <form id="update-confirm-form">
+  <div id="update-confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl transform transition-all">
+      <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-4 rounded-t-2xl">
+        <h2 class="text-lg font-bold">อัพเดทสถานะยืนยัน</h2>
+      </div>
+      <form id="update-confirm-form" class="p-4">
         <input type="hidden" id="confirm-update-id">
-        <div class="mb-2">
-          <label class="block text-sm">สถานะยืนยัน</label>
-          <select id="update-confirm-select" class="w-full border px-2 py-1 rounded">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">สถานะยืนยัน</label>
+          <select id="update-confirm-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none">
             <option value="ยืนยันแล้ว">ยืนยันแล้ว</option>
             <option value="ยกเลิก">ยกเลิก</option>
           </select>
         </div>
-        <div class="flex justify-end">
-          <button type="button" onclick="closeConfirmModal()"
-            class="bg-gray-500 text-white py-1 px-3 rounded mr-2">ยกเลิก</button>
-          <button type="submit" class="bg-blue-500 text-white py-1 px-3 rounded">บันทึก</button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closeConfirmModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium">ยกเลิก</button>
+          <button type="submit" class="flex-1 bg-gradient-to-r from-[#EB8012] to-[#ff9933] text-white px-4 py-2 rounded-lg font-medium shadow-lg">บันทึก</button>
         </div>
       </form>
     </div>
@@ -141,122 +115,161 @@
 
   <!-- Modals สำหรับอัพเดทกลุ่มทั้งหมด -->
   <!-- 4. แจ้งเข้าร่วม ทั้งกลุ่ม -->
-  <div id="update-group-join-modal"
-    class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-4 rounded-xl w-11/12 max-w-md">
-      <h2 class="text-lg font-bold mb-4">อัพเดทแจ้งเข้าร่วม (กลุ่ม)</h2>
-      <form id="update-group-join-form">
+  <div id="update-group-join-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl transform transition-all">
+      <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-4 rounded-t-2xl">
+        <h2 class="text-lg font-bold">อัพเดทแจ้งเข้าร่วม (กลุ่ม)</h2>
+      </div>
+      <form id="update-group-join-form" class="p-4">
         <input type="hidden" id="group-join-update-id">
-        <div class="mb-2">
-          <label class="block text-sm">แจ้งเข้าร่วม</label>
-          <select id="update-group-join-select" class="w-full border px-2 py-1 rounded">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">สถานะแจ้งเข้าร่วม</label>
+          <select id="update-group-join-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none">
             <option value="แจ้งแล้ว">แจ้งแล้ว</option>
             <option value="ยังไม่แจ้ง">ยังไม่แจ้ง</option>
           </select>
         </div>
-        <div class="flex justify-end">
-          <button type="button" onclick="closeGroupJoinModal()"
-            class="bg-gray-500 text-white py-1 px-3 rounded mr-2">ยกเลิก</button>
-          <button type="submit" class="bg-blue-500 text-white py-1 px-3 rounded">บันทึก</button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closeGroupJoinModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium">ยกเลิก</button>
+          <button type="submit" class="flex-1 bg-gradient-to-r from-[#EB8012] to-[#ff9933] text-white px-4 py-2 rounded-lg font-medium shadow-lg">บันทึก</button>
         </div>
       </form>
     </div>
   </div>
 
   <!-- 5) Update Group Confirm -->
-  <div id="update-group-confirm-modal"
-    class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white p-4 rounded-xl w-11/12 max-w-md">
-      <h2 class="text-lg font-bold mb-4">อัพเดทเปิด-ปิด กิจกรรม(กลุ่ม)</h2>
-      <form id="update-group-confirm-form">
+  <div id="update-group-confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl transform transition-all">
+      <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-4 rounded-t-2xl">
+        <h2 class="text-lg font-bold">อัพเดทเปิด-ปิด กิจกรรม</h2>
+      </div>
+      <form id="update-group-confirm-form" class="p-4">
         <input type="hidden" id="group-confirm-update-id">
-        <div class="mb-2">
-          <label class="block text-sm">สถานะยืนยัน</label>
-          <select id="update-group-confirm-select" class="w-full border px-2 py-1 rounded">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">สถานะกิจกรรม</label>
+          <select id="update-group-confirm-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none">
             <option value="เปิดกิจกรรม">เปิดกิจกรรม</option>
             <option value="จบกิจกรรม">จบกิจกรรม</option>
             <option value="ยกเลิก">ยกเลิกกิจกรรม</option>
           </select>
         </div>
-        <div class="flex justify-end">
-          <button type="button" onclick="closeGroupConfirmModal()"
-            class="bg-gray-500 text-white px-3 py-1 rounded mr-2">ยกเลิก</button>
-          <button type="submit" class="bg-blue-500 text-white px-3 py-1 rounded">บันทึก</button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closeGroupConfirmModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium">ยกเลิก</button>
+          <button type="submit" class="flex-1 bg-gradient-to-r from-[#EB8012] to-[#ff9933] text-white px-4 py-2 rounded-lg font-medium shadow-lg">บันทึก</button>
         </div>
       </form>
     </div>
   </div>
   <!-- 6) Edit Modal -->
-  <div id="edit-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-xl w-11/12 max-w-2xl overflow-y-auto max-h-[90vh]">
-      <h2 class="text-lg font-bold mb-4">แก้ไขข้อมูลการจอง</h2>
-      <form id="edit-form" class="space-y-3">
+  <div id="edit-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+      <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-4">
+        <h2 class="text-lg font-bold">แก้ไขข้อมูลการจอง</h2>
+      </div>
+      <form id="edit-form" class="p-4 overflow-y-auto flex-1">
         <input type="hidden" id="edit-id">
-        <div class="grid grid-cols-2 gap-4">
-          <input id="edit-eventId" class="border p-2 rounded" placeholder="Event ID">
-          <input id="edit-activityName" class="border p-2 rounded" placeholder="กิจกรรม">
-          <input id="edit-category" class="border p-2 rounded" placeholder="หมวดหมู่">
-          <input id="edit-price" class="border p-2 rounded" placeholder="ราคา">
-          <input id="edit-date" class="border p-2 rounded" placeholder="วันที่">
-          <input id="edit-time" class="border p-2 rounded" placeholder="เวลา">
-          <input id="edit-queue" class="border p-2 rounded" placeholder="คิว">
-          <input id="edit-bookerName" class="border p-2 rounded" placeholder="ชื่อผู้จอง">
-          <input id="edit-bookerENG" class="border p-2 rounded" placeholder="ชื่อ ENG">
-          <input id="edit-idCard" class="border p-2 rounded" placeholder="เลขบัตร ปชช.">
-          <input id="edit-address" class="border p-2 rounded" placeholder="ที่อยู่">
-          <input id="edit-phone" class="border p-2 rounded" placeholder="เบอร์โทร">
-          <input id="edit-email" class="border p-2 rounded" placeholder="อีเมล">
-          <!-- ใบแจ้งหนี้ -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
-            <label class="block text-sm">ใบแจ้งหนี้</label>
-            <input type="url" id="edit-invoice" class="border p-2 rounded w-full mb-1" placeholder="วางลิงก์ที่นี่">
-            <input type="file" id="upload-invoice" class="block w-full text-sm text-gray-700">
+            <label class="block text-xs font-medium text-gray-700 mb-1">Event ID</label>
+            <input id="edit-eventId" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
           </div>
-
-          <!-- ใบเสร็จ -->
           <div>
-            <label class="block text-sm">ใบเสร็จ</label>
-            <input type="url" id="edit-receipt" class="border p-2 rounded w-full mb-1" placeholder="วางลิงก์ที่นี่">
-            <input type="file" id="upload-receipt" class="block w-full text-sm text-gray-700">
+            <label class="block text-xs font-medium text-gray-700 mb-1">กิจกรรม</label>
+            <input id="edit-activityName" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
           </div>
-
-          <!-- ใบรับรอง -->
           <div>
-            <label class="block text-sm">ใบรับรอง</label>
-            <input type="url" id="edit-certificate" class="border p-2 rounded w-full mb-1" placeholder="วางลิงก์ที่นี่">
-            <input type="file" id="upload-certificate" class="block w-full text-sm text-gray-700">
+            <label class="block text-xs font-medium text-gray-700 mb-1">หมวดหมู่</label>
+            <input id="edit-category" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
           </div>
-
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">ราคา</label>
+            <input id="edit-price" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">วันที่</label>
+            <input id="edit-date" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">เวลา</label>
+            <input id="edit-time" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">จำนวน</label>
+            <input id="edit-queue" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">ชื่อผู้จอง</label>
+            <input id="edit-bookerName" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">ชื่อ ENG</label>
+            <input id="edit-bookerENG" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">เลขบัตร ปชช.</label>
+            <input id="edit-idCard" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">ที่อยู่</label>
+            <input id="edit-address" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">เบอร์โทร</label>
+            <input id="edit-phone" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">อีเมล</label>
+            <input id="edit-email" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">ใบแจ้งหนี้</label>
+            <input type="url" id="edit-invoice" class="w-full border-2 border-gray-300 p-2 rounded-lg mb-1 focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm" placeholder="วางลิงก์">
+            <input type="file" id="upload-invoice" class="block w-full text-xs text-gray-700 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-[#EB8012] file:text-white hover:file:bg-[#d67010]">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">ใบเสร็จ</label>
+            <input type="url" id="edit-receipt" class="w-full border-2 border-gray-300 p-2 rounded-lg mb-1 focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm" placeholder="วางลิงก์">
+            <input type="file" id="upload-receipt" class="block w-full text-xs text-gray-700 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-[#EB8012] file:text-white hover:file:bg-[#d67010]">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-1">ใบรับรอง</label>
+            <input type="url" id="edit-certificate" class="w-full border-2 border-gray-300 p-2 rounded-lg mb-1 focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm" placeholder="วางลิงก์">
+            <input type="file" id="upload-certificate" class="block w-full text-xs text-gray-700 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-[#EB8012] file:text-white hover:file:bg-[#d67010]">
+          </div>
         </div>
-        <textarea id="edit-note" rows="3" class="w-full border p-2 rounded" placeholder="หมายเหตุเพิ่มเติม"></textarea>
-        <div class="flex justify-end pt-4">
-          <button type="button" onclick="closeEditModal()"
-            class="bg-gray-500 text-white px-3 py-1 rounded mr-2">ยกเลิก</button>
-          <button type="submit" class="bg-blue-600 text-white px-3 py-1 rounded">บันทึก</button>
+        <div class="mt-3">
+          <label class="block text-xs font-medium text-gray-700 mb-1">หมายเหตุเพิ่มเติม</label>
+          <textarea id="edit-note" rows="3" class="w-full border-2 border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm"></textarea>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <button type="button" onclick="closeEditModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium">ยกเลิก</button>
+          <button type="submit" class="flex-1 bg-gradient-to-r from-[#EB8012] to-[#ff9933] text-white px-4 py-2 rounded-lg font-medium shadow-lg">บันทึก</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 flex flex-col items-center shadow-2xl">
+      <div class="animate-spin rounded-full h-16 w-16 border-4 border-[#EB8012] border-t-transparent mb-4"></div>
+      <span class="text-[#0A164D] text-lg font-medium">กรุณารอสักครู่...</span>
+    </div>
+  </div>
+
   <script>
     let tableData = [];
-    let eventCaps = {};  // เก็บ capacity ของแต่ละ eventId
+    let eventCaps = {};
 
-    // แก้ไขเป็น
     function startLoading() {
-      // แสดง overlay
-      $('#loadingOverlay').removeClass('hidden');
-      // ปิดใช้งานปุ่มทุกตัวกันกดซ้ำ
+      $('#loading-overlay').removeClass('hidden');
       $('button').prop('disabled', true);
     }
-    
+
     function stopLoading() {
-      // ซ่อน overlay
-      $('#loadingOverlay').addClass('hidden');
-      // เปิดใช้งานปุ่มกลับ
+      $('#loading-overlay').addClass('hidden');
       $('button').prop('disabled', false);
     }
-
 
     // Fetch + แปลงข้อมูล
     async function fetchData() {
@@ -265,25 +278,25 @@
         const resp = await fetch(ADMIN_URL);
         const { appointments, events } = await resp.json();
 
-        // สร้าง map ของ capacity: { A1:5, A2:15, ... }
+        // capacity map - อ่านจากคอลัมน์ D (index 3)
         eventCaps = {};
-        events.slice(1).forEach(row => {
-          const [eventId, , , cap] = row;
-          eventCaps[String(eventId)] = Number(cap) || 0;
+        events.slice(1).forEach(r => {
+          const evtId = String(r[0]);
+          const cap = Number(r[3]) || 0;
+          eventCaps[evtId] = cap;
         });
 
-        // แปลง appointments
         tableData = appointments.slice(1).map(r => ({
           id: String(r[0]), eventId: String(r[1]), activityName: r[2], category: r[3],
           price: r[4], date: r[5], time: r[6], queue: r[7], bookerName: r[8],
           bookerENG: r[9], idCard: r[10], address: r[11], phone: r[12], email: r[13],
           note: r[14], status: r[15], payment: r[16], joinStatus: r[17],
           confirmStatus: r[18], additionalNotes: r[19],
-          useridline: r[20], invoice: r[21], receipt: r[22], certificate: r[23]  // ✅ เพิ่มตรงนี้
+          useridline: r[20], invoice: r[21], receipt: r[22], certificate: r[23],
+          paymentSlip: r[24]
         }));
 
-
-
+        renderMetrics();
         renderGroups();
       } catch (err) {
         Swal.fire('Error', 'ไม่สามารถโหลดข้อมูลได้', 'error');
@@ -292,21 +305,26 @@
       }
     }
 
-    function groupBy(arr, key) {
-      return arr.reduce((acc, cur) => {
-        (acc[cur[key]] = acc[cur[key]] || []).push(cur);
-        return acc;
-      }, {});
+    function renderMetrics() {
+      const total = tableData.length;
+      const pending = tableData.filter(x => x.status === 'เข้าร่วม').length;
+      const cancle = tableData.filter(x => x.status === 'ยกเลิก').length;
+      const done = tableData.filter(x => x.status === 'จบกิจกรรม').length;
+      $('#metric-total').text(total);
+      $('#metric-pending').text(pending);
+      $('#metric-cancle').text(cancle);
+      $('#metric-done').text(done);
     }
 
-    // แสดงกลุ่ม พร้อมจำนวนจอง/จำนวนสูงสุด
+    function groupBy(arr, key) {
+      return arr.reduce((a, c) => (a[c[key]] = (a[c[key]] || []).concat(c), a), {});
+    }
+
+    // แสดงกลุ่ม พร้อมจำนวนจอง/จำนวนสูงสุด และ capacity badge
     function renderGroups() {
-      // ดึงค่าตัวกรอง
       const statusFilter = $('#filter-status').val();
       const dateFilter = $('#filter-date').val();
 
-      // 1) กรองตามสถานะ: ถ้าเลือกสถานะ ให้แสดงเฉพาะสถานะนั้น
-      //    ถ้าไม่เลือก ให้ซ่อนการ์ดที่ status === 'ปิดกิจกรรม'
       let filtered;
       if (statusFilter) {
         filtered = tableData.filter(x => x.status === statusFilter);
@@ -314,123 +332,223 @@
         filtered = tableData.filter(x => x.status !== 'จบกิจกรรม');
       }
 
-      // 2) กรองตามวันที่ (ถ้ามี)
       if (dateFilter) {
         const [y, m, d] = dateFilter.split('-');
         filtered = filtered.filter(x => x.date === `${d}-${m}-${y}`);
       }
 
-      // 3) จัดกลุ่มตาม eventId
       const groups = groupBy(filtered, 'eventId');
-
-      // 4) ล้าง container แล้วเริ่ม render ใหม่
       const cont = $('#groups-container').empty();
 
       for (const [eid, items] of Object.entries(groups)) {
-        // ข้อมูล header ของกลุ่ม
         const h = items[0];
-        const booked = items.length;
+        const booked = items.filter(it => it.status !== 'ยกเลิก').length;
         const cap = eventCaps[eid] || 0;
+        
+        const percentage = cap > 0 ? (booked / cap) * 100 : 0;
+        let capacityBadgeClass = 'bg-blue-100 text-blue-700';
+        let capacityStatus = '';
+        
+        if (percentage >= 100) {
+          capacityBadgeClass = 'bg-red-100 text-red-700 border-2 border-red-400';
+          capacityStatus = 'เต็ม';
+        } else if (percentage >= 80) {
+          capacityBadgeClass = 'bg-orange-100 text-orange-700';
+          capacityStatus = 'ใกล้เต็ม';
+        } else if (percentage >= 50) {
+          capacityBadgeClass = 'bg-yellow-100 text-yellow-700';
+        } else {
+          capacityBadgeClass = 'bg-green-100 text-green-700';
+        }
 
-        // สร้างกล่องการ์ด
         const box = $(`
-      <div class="bg-white rounded-xl shadow p-4">
-        <div class="flex justify-between items-center">
-          <div>
-            <span class="font-bold text-lg">${h.activityName}</span><br>
-            <span class="text-sm text-gray-600">${h.date} ${h.time}</span>
-            <span class="ml-2 text-sm text-gray-500">(${booked}/${cap})</span>
+          <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+            <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-3">
+              <div class="flex justify-between items-start mb-2">
+                <div class="flex-1">
+                  <h3 class="font-bold text-base mb-1">${h.activityName}</h3>
+                  <div class="text-xs opacity-90 mb-2">${h.date} • ${h.time}</div>
+                  <div class="flex items-center gap-2">
+                    <div class="inline-flex items-center gap-2 ${capacityBadgeClass} px-3 py-1 rounded-lg font-bold text-xs">
+                      <span>${booked}/${cap}</span>
+                      ${capacityStatus ? `<span class="text-xs font-normal">(${capacityStatus})</span>` : ''}
+                    </div>
+                    ${percentage > 0 ? `
+                    <div class="flex-1 max-w-[80px] bg-white/20 rounded-full h-2 overflow-hidden">
+                      <div class="h-full ${percentage >= 100 ? 'bg-red-400' : percentage >= 80 ? 'bg-orange-400' : percentage >= 50 ? 'bg-yellow-400' : 'bg-green-400'}" style="width: ${Math.min(percentage, 100)}%"></div>
+                    </div>
+                    ` : ''}
+                  </div>
+                </div>
+              </div>
+              <div class="flex gap-2">
+                <button class="flex-1 bg-[#EB8012] hover:bg-[#d67010] text-white py-2 px-2 rounded-lg text-xs font-medium transition-all" onclick="openGroupJoinModal('${eid}')">
+                  ยืนยัน
+                </button>
+                <button class="flex-1 bg-white/20 hover:bg-white/30 text-white py-2 px-2 rounded-lg text-xs font-medium transition-all" onclick="openGroupConfirmModal('${eid}')">
+                  กิจกรรม
+                </button>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-gray-50 border-b border-gray-200">
+                    <th class="px-3 py-2 text-left text-xs font-semibold text-gray-600">ชื่อ-สกุล</th>
+                    <th class="px-3 py-2 text-left text-xs font-semibold text-gray-600">สถานะ</th>
+                    <th class="px-3 py-2 text-left text-xs font-semibold text-gray-600">ยืนยัน</th>
+                    <th class="px-3 py-2 text-center text-xs font-semibold text-gray-600">จัดการ</th>
+                  </tr>
+                </thead>
+                <tbody class="event-tbody" data-event-id="${eid}"></tbody>
+              </table>
+              ${items.length > 10 ? `
+              <div class="p-3 bg-gray-50 border-t text-center">
+                <button class="load-more-btn bg-[#0A164D] hover:bg-[#1a2d6b] text-white px-4 py-2 rounded-lg text-xs font-medium transition-all" onclick="loadMoreItems('${eid}')">
+                  โหลดเพิ่ม (แสดง <span class="current-count">10</span>/${items.length})
+                </button>
+              </div>
+              ` : ''}
+            </div>
           </div>
-          <div class="flex space-x-2">
-            <button class="bg-[#0A164D] text-white p-2 rounded" onclick="openGroupJoinModal('${eid}')">
-              <span class="text-sm p-2">ยืนยีน</span>
-            </button>
-            <button class="bg-[#EB8012] text-white p-2 rounded" onclick="openGroupConfirmModal('${eid}')">
-              <span class="text-sm p-2">กิจกรรม</span>
-            </button>
-          </div>
-        </div>
-        <table class="w-full text-sm mt-4">
-          <thead>
-            <tr class="bg-gray-100">
-              <th class="px-2 py-1">ชื่อ-สกุล</th>
-              <th class="px-2 py-1">สถานะ</th>
-              <th class="px-2 py-1">สถานะยืนยัน</th>
-              <th class="px-2 py-1"></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    `);
+        `);
 
-        // เติมรายการแต่ละคนลงใน tbody
-        items.forEach(it => {
-          box.find('tbody').append(`
-        <tr data-id="${it.id}">
-          <td class="border px-2 py-1">${it.bookerName}</td>
-          <td class="border px-2 py-1">${it.status}</td>
-          <td class="border px-2 py-1">${it.confirmStatus}</td>
-          <td class="border px-2 py-1 text-center">
-            <button class="bg-[#071D4A] text-white px-2 py-1 rounded" onclick="toggleDetailsInGroup('${it.id}', this)">
-              <span class="material-icons-round">expand_more</span>
-            </button>
-          </td>
-        </tr>
-      `);
-        });
-
-        // แปะกล่องลงใน container
+        box.data('allItems', items);
+        box.data('displayedCount', 0);
+        renderItemsForEvent(box, items, 0, 10);
         cont.append(box);
       }
     }
 
+    function renderItemsForEvent(box, items, start, count) {
+      const end = Math.min(start + count, items.length);
+      const tbody = box.find('.event-tbody');
+      
+      for (let i = start; i < end; i++) {
+        const it = items[i];
+        const statusColor = 
+          it.status === 'เข้าร่วม' ? 'bg-green-100 text-green-700' :
+          it.status === 'ยกเลิก' ? 'bg-red-100 text-red-700' :
+          it.status === 'จบกิจกรรม' ? 'bg-purple-100 text-purple-700' :
+          'bg-blue-100 text-blue-700';
+        
+        const confirmColor = 
+          it.confirmStatus === 'ยืนยันแล้ว' ? 'bg-green-100 text-green-700' :
+          it.confirmStatus === 'ยกเลิก' ? 'bg-red-100 text-red-700' :
+          'bg-gray-100 text-gray-700';
+
+        tbody.append(`
+          <tr data-id="${it.id}" class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+            <td class="px-3 py-2 font-medium text-gray-800">${it.bookerName}</td>
+            <td class="px-3 py-2">
+              <span class="inline-block px-2 py-1 rounded-full text-xs font-medium ${statusColor}">
+                ${it.status}
+              </span>
+            </td>
+            <td class="px-3 py-2">
+              <span class="inline-block px-2 py-1 rounded-full text-xs font-medium ${confirmColor}">
+                ${it.confirmStatus}
+              </span>
+            </td>
+            <td class="px-3 py-2 text-center">
+              <button class="bg-[#0A164D] hover:bg-[#1a2d6b] text-white px-3 py-1.5 rounded-lg transition-all text-xs font-medium" onclick="toggleDetailsInGroup('${it.id}', this)">
+                <span class="toggle-icon">▼</span>
+              </button>
+            </td>
+          </tr>
+        `);
+      }
+      
+      box.data('displayedCount', end);
+      
+      const loadMoreBtn = box.find('.load-more-btn');
+      if (loadMoreBtn.length) {
+        loadMoreBtn.find('.current-count').text(end);
+        if (end >= items.length) {
+          loadMoreBtn.hide();
+        }
+      }
+    }
+
+    function loadMoreItems(eventId) {
+      const box = $(`.event-tbody[data-event-id="${eventId}"]`).closest('.bg-white');
+      const allItems = box.data('allItems');
+      const currentCount = box.data('displayedCount');
+      
+      renderItemsForEvent(box, allItems, currentCount, 10);
+    }
+
     // ขยายรายละเอียดของแต่ละแถว
     function toggleDetailsInGroup(itemId, btn) {
-      const row = btn.closest('tr');
-      if (row.nextElementSibling && row.nextElementSibling.classList.contains('details-row')) {
-        row.nextElementSibling.remove();
+      const row = $(btn).closest('tr');
+      if (row.next().hasClass('details-row')) {
+        row.next().remove();
+        $(btn).find('.toggle-icon').text('▼');
         return;
       }
+      $(btn).find('.toggle-icon').text('▲');
       const it = tableData.find(x => x.id === itemId);
-      const html = `
-        <tr class="details-row bg-gray-50">
-          <td colspan="4" class="p-3 border-t">
-            <div class="space-y-1 text-sm">
-              <div><strong>ไอดี:</strong> ${it.id}</div>
-              <div><strong>ไอดีกิจกรรม:</strong> ${it.eventId}</div>
-              <div><strong>ชื่อกิจกรรม:</strong> ${it.activityName}</div>
-              <div><strong>หมวดหมู่:</strong> ${it.category}</div>
-              <div><strong>ราคา:</strong> ${it.price}</div>
-              <div><strong>วันที่/เวลา:</strong> ${it.date} ${it.time}</div>
-              <div><strong>จำนวน:</strong> ${it.queue}</div>
-              <div><strong>ชื่อ-สกุล:</strong> ${it.bookerName}</div>
-              <div><strong>ชื่อ-สกุลENG:</strong> ${it.bookerENG}</div>
-              <div><strong>บัตรประชาชน:</strong> ${it.idCard}</div>
-              <div><strong>ที่อยู่:</strong> ${it.address}</div>
-              <div><strong>เบอร์ติดต่อ:</strong> ${it.phone}</div>
-              <div><strong>อีเมล:</strong> ${it.email}</div>
-              <div><strong>หมายเหตุ:</strong> ${it.note}</div>
-              <div><strong>สถานะ:</strong> ${it.status}</div>
-              <div><strong>ชำระเงิน:</strong> ${it.payment}</div>
-              <div><strong>แจ้งเข้าร่วม:</strong> ${it.joinStatus}</div>
-              <div><strong>สถานะยืนยัน:</strong> ${it.confirmStatus}</div>
-              <div><strong>บันทึกเพิ่มเติม:</strong> ${it.additionalNotes || '-'}</div>
-            ${it.invoice ? `<div><strong>ใบแจ้งหนี้:</strong> <a href="${it.invoice}" target="_blank" class="text-blue-600 underline">ดูเอกสาร</a></div>` : ''}
-            ${it.receipt ? `<div><strong>ใบเสร็จ:</strong> <a href="${it.receipt}" target="_blank" class="text-blue-600 underline">ดูเอกสาร</a></div>` : ''}
-            ${it.certificate ? `<div><strong>ใบรับรอง:</strong> <a href="${it.certificate}" target="_blank" class="text-blue-600 underline">ดูเอกสาร</a></div>` : ''}
-
-              </div>
-            <div class="mt-3 flex flex-wrap gap-2">
-              <button class="bg-blue-500 text-white py-1 px-3 rounded" onclick="openPaymentModal('${it.id}')">ชำระเงิน</button>
-              <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="openJoinModal('${it.id}')">แจ้งเข้าร่วม</button>
-              <button class="bg-orange-500 text-white py-1 px-3 rounded" onclick="openConfirmModal('${it.id}')">ยืนยัน</button>
-              <button class="bg-yellow-500 text-white py-1 px-3 rounded" onclick="openEditModal('${it.id}')">แก้ไข</button>
-              <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="deleteRecord('${it.id}')">ลบ</button>
+      const html = `<tr class="details-row bg-gradient-to-br from-gray-50 to-white">
+        <td colspan="4" class="p-4 border-t-2 border-[#EB8012]">
+          <div class="grid grid-cols-1 gap-3 text-xs">
+            <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+              <div><span class="text-gray-500">ID:</span> <span class="font-medium">${it.id}</span></div>
+              <div><span class="text-gray-500">กิจกรรม:</span> <span class="font-medium">${it.activityName}</span></div>
+              <div><span class="text-gray-500">หมวดหมู่:</span> <span class="font-medium">${it.category}</span></div>
+              <div><span class="text-gray-500">ราคา:</span> <span class="font-medium">${it.price} บาท</span></div>
+              <div><span class="text-gray-500">วัน/เวลา:</span> <span class="font-medium">${it.date} ${it.time}</span></div>
+              <div><span class="text-gray-500">จำนวน:</span> <span class="font-medium">${it.queue} ที่นั่ง</span></div>
+              <div><span class="text-gray-500">เลขบัตร:</span> <span class="font-medium">${it.idCard}</span></div>
+              <div><span class="text-gray-500">ชื่อ-สกุล:</span> <span class="font-medium">${it.bookerName}</span></div>
+              <div><span class="text-gray-500">ชื่อ ENG:</span> <span class="font-medium">${it.bookerENG}</span></div>
+              <div><span class="text-gray-500">ที่อยู่:</span> <span class="font-medium">${it.address}</span></div>
+              <div><span class="text-gray-500">โทร:</span> <span class="font-medium">${it.phone}</span></div>
+              <div><span class="text-gray-500">อีเมล:</span> <span class="font-medium">${it.email}</span></div>
+              <div><span class="text-gray-500">หมายเหตุ:</span> <span class="font-medium">${it.note || '-'}</span></div>
             </div>
-          </td>
-        </tr>`;
-      row.insertAdjacentHTML('afterend', html);
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
+              <div class="bg-blue-50 p-2 rounded-lg">
+                <div class="text-xs text-gray-500">สถานะ</div>
+                <div class="font-medium text-sm">${it.status}</div>
+              </div>
+              <div class="bg-green-50 p-2 rounded-lg">
+                <div class="text-xs text-gray-500">ชำระเงิน</div>
+                <div class="font-medium text-sm">${it.payment}</div>
+              </div>
+              <div class="bg-yellow-50 p-2 rounded-lg">
+                <div class="text-xs text-gray-500">แจ้งเข้าร่วม</div>
+                <div class="font-medium text-sm">${it.joinStatus}</div>
+              </div>
+              <div class="bg-purple-50 p-2 rounded-lg">
+                <div class="text-xs text-gray-500">ยืนยัน</div>
+                <div class="font-medium text-sm">${it.confirmStatus}</div>
+              </div>
+            </div>
+            
+            ${it.invoice || it.receipt || it.certificate || it.paymentSlip ? `
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <div class="text-xs font-medium text-gray-600 mb-2">เอกสาร</div>
+              <div class="grid grid-cols-2 gap-2">
+                ${it.invoice ? `<a href="${it.invoice}" target="_blank" class="text-xs text-blue-600 hover:text-blue-700 bg-white p-2 rounded">ใบแจ้งหนี้</a>` : ''}
+                ${it.receipt ? `<a href="${it.receipt}" target="_blank" class="text-xs text-blue-600 hover:text-blue-700 bg-white p-2 rounded">ใบเสร็จ</a>` : ''}
+                ${it.certificate ? `<a href="${it.certificate}" target="_blank" class="text-xs text-blue-600 hover:text-blue-700 bg-white p-2 rounded">ใบรับรอง</a>` : ''}
+                ${it.paymentSlip ? `<a href="${it.paymentSlip}" target="_blank" class="text-xs text-blue-600 hover:text-blue-700 bg-white p-2 rounded">หลักฐานชำระ</a>` : ''}
+              </div>
+            </div>
+            ` : ''}
+            
+            <div class="flex flex-wrap gap-2 mt-2">
+              <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition-all" onclick="openPaymentModal('${it.id}')">ชำระเงิน</button>
+              <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition-all" onclick="openJoinModal('${it.id}')">แจ้งเข้าร่วม</button>
+              <button class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition-all" onclick="openConfirmModal('${it.id}')">ยืนยัน</button>
+              <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition-all" onclick="openEditModal('${it.id}')">แก้ไข</button>
+              <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-xs font-medium transition-all" onclick="deleteRecord('${it.id}')">ลบ</button>
+            </div>
+          </div>
+        </td>
+      </tr>`;
+      row.after(html);
     }
 
     // ชำระเงิน
