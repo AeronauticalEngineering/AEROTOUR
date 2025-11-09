@@ -3,107 +3,165 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Dashboard Events</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>จัดการกิจกรรม - AEROTOUR</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- config.js สำหรับ API_URL -->
   <script src="config.js"></script>
 </head>
 
-<body class="bg-slate-200 min-h-screen flex">
+<body class="bg-gray-50 min-h-screen flex">
 
   <!-- Side Navigation -->
-  <aside class="w-64 bg-white shadow flex flex-col">
-    <div class="p-4 font-bold text-lg border-b">Dashboard</div>
-    <nav class="flex-1 mt-4">
-      <a href="Dashboard.html" class="block p-4 text-gray-700 bg-gray-200">Dashboard</a>
-      <a href="#" class="block p-4 text-gray-100 bg-gray-800">Event</a>
-      <a href="Member.html" class="block p-4 text-gray-700 bg-gray-200">Member</a>
+  <aside class="w-56 bg-[#0A164D] shadow-lg flex flex-col">
+    <div class="p-4 text-white font-bold text-xl border-b border-[#EB8012]">
+      <span>AEROTOUR</span>
+    </div>
+    <nav class="flex-1 mt-2 px-2">
+      <a href="Dashboard.html" class="block p-3 text-gray-300 hover:bg-[#1a2d6b] rounded-lg mb-2 transition-all font-medium">
+        Dashboard
+      </a>
+      <a href="#" class="block p-3 text-white bg-[#EB8012] rounded-lg mb-2 transition-all font-medium">
+        Event
+      </a>
+      <a href="Member.html" class="block p-3 text-gray-300 hover:bg-[#1a2d6b] rounded-lg transition-all font-medium">
+        Member
+      </a>
     </nav>
   </aside>
-  <div class="flex-1  p-10">
+
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <!-- Header -->
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-[#0A164D] mb-1">จัดการกิจกรรม</h1>
+      <p class="text-sm text-gray-500">เพิ่ม แก้ไข และจัดการกิจกรรมทั้งหมด</p>
+    </div>
+
     <!-- ปุ่มเพิ่ม -->
     <div class="flex justify-end mb-4">
-      <button class="bg-blue-600 text-white px-4 py-2 rounded" onclick="showAddForm()">เพิ่มกิจกรรม</button>
+      <button class="bg-gradient-to-r from-[#EB8012] to-[#ff9933] hover:from-[#d67010] hover:to-[#EB8012] text-white px-6 py-3 rounded-lg font-medium transition-all shadow-lg" onclick="showAddForm()">
+        + เพิ่มกิจกรรม
+      </button>
     </div>
+
     <!-- ฟอร์ม -->
-    <section id="formSection" class="bg-white p-4 rounded shadow hidden">
-      <div class="flex justify-between mb-4">
-        <h2 id="formTitle" class="text-xl font-semibold">บันทึกกิจกรรม</h2>
-        <button onclick="hideForm()">✕</button>
+    <section id="formSection" class="bg-white rounded-xl shadow-lg mb-6 hidden overflow-hidden">
+      <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-5 flex justify-between items-center">
+        <h2 id="formTitle" class="text-lg font-bold">บันทึกกิจกรรม</h2>
+        <button onclick="hideForm()" class="text-white hover:text-gray-200 text-2xl font-bold">&times;</button>
       </div>
-      <form id="eventForm" class="space-y-4">
-        <div class="grid grid-cols-4 gap-4">
+      <form id="eventForm" class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
           <div>
-            <label>ไอดีกิจกรรม</label>
-            <input type="text" name="ไอดีกิจกรรม" class="w-full border rounded p-1" placeholder="ระบบสร้างอัตโนมัติ">
+            <label class="block text-xs font-medium text-gray-700 mb-2">ไอดีกิจกรรม</label>
+            <input type="text" name="ไอดีกิจกรรม" class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm" placeholder="ระบบสร้างอัตโนมัติ">
           </div>
-          <div><label>ชื่อกิจกรรม</label><input type="text" name="ชื่อ" required class="w-full border rounded p-1">
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-2">ชื่อกิจกรรม</label>
+            <input type="text" name="ชื่อ" required class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
           </div>
-          <div><label>หมวดหมู่</label><input type="text" name="หมวดหมู่" required class="w-full border rounded p-1">
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-2">หมวดหมู่</label>
+            <input type="text" name="หมวดหมู่" required class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
           </div>
-          <div><label>จำนวนจำกัด</label><input type="number" name="จำนวนจำกัด" required
-              class="w-full border rounded p-1"></div>
-          <div><label>วันที่</label><input type="date" name="วันที่" required class="w-full border rounded p-1"></div>
-          <div><label>เวลา</label><input type="time" name="เวลา" required class="w-full border rounded p-1"></div>
-          <div><label>ราคา</label><input type="number" name="ราคา" required class="w-full border rounded p-1"></div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-2">จำนวนจำกัด</label>
+            <input type="number" name="จำนวนจำกัด" required class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-2">วันที่</label>
+            <input type="date" name="วันที่" required class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-2">เวลา</label>
+            <input type="time" name="เวลา" required class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-700 mb-2">ราคา</label>
+            <input type="number" name="ราคา" required class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
+          </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
           <div>
-            <label>รูปภาพ</label>
-            <input type="file" id="imgCoverInput" accept="image/*" class="block w-full">
-            <img id="imgCoverPreview" class="hidden w-32 h-20 mt-2 object-cover rounded">
+            <label class="block text-xs font-medium text-gray-700 mb-2">รูปภาพ</label>
+            <input type="file" id="imgCoverInput" accept="image/*" class="block w-full text-xs text-gray-700 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-[#EB8012] file:text-white hover:file:bg-[#d67010] file:cursor-pointer">
+            <img id="imgCoverPreview" class="hidden w-full h-24 mt-2 object-cover rounded-lg border-2 border-gray-200">
             <input type="hidden" name="รูปภาพOLD" id="รูปภาพOLD">
           </div>
           <div>
-            <label>รูปประกอบ-1</label>
-            <input type="file" id="img1Input" accept="image/*" class="block w-full">
-            <img id="img1Preview" class="hidden w-32 h-20 mt-2 object-cover rounded">
+            <label class="block text-xs font-medium text-gray-700 mb-2">รูปประกอบ-1</label>
+            <input type="file" id="img1Input" accept="image/*" class="block w-full text-xs text-gray-700 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-[#EB8012] file:text-white hover:file:bg-[#d67010] file:cursor-pointer">
+            <img id="img1Preview" class="hidden w-full h-24 mt-2 object-cover rounded-lg border-2 border-gray-200">
             <input type="hidden" name="รูปประกอบ-1OLD" id="รูปประกอบ-1OLD">
           </div>
           <div>
-            <label>รูปประกอบ-2</label>
-            <input type="file" id="img2Input" accept="image/*" class="block w-full">
-            <img id="img2Preview" class="hidden w-32 h-20 mt-2 object-cover rounded">
+            <label class="block text-xs font-medium text-gray-700 mb-2">รูปประกอบ-2</label>
+            <input type="file" id="img2Input" accept="image/*" class="block w-full text-xs text-gray-700 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-[#EB8012] file:text-white hover:file:bg-[#d67010] file:cursor-pointer">
+            <img id="img2Preview" class="hidden w-full h-24 mt-2 object-cover rounded-lg border-2 border-gray-200">
             <input type="hidden" name="รูปประกอบ-2OLD" id="รูปประกอบ-2OLD">
           </div>
           <div>
-            <label>รูปประกอบ-3</label>
-            <input type="file" id="img3Input" accept="image/*" class="block w-full">
-            <img id="img3Preview" class="hidden w-32 h-20 mt-2 object-cover rounded">
+            <label class="block text-xs font-medium text-gray-700 mb-2">รูปประกอบ-3</label>
+            <input type="file" id="img3Input" accept="image/*" class="block w-full text-xs text-gray-700 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-[#EB8012] file:text-white hover:file:bg-[#d67010] file:cursor-pointer">
+            <img id="img3Preview" class="hidden w-full h-24 mt-2 object-cover rounded-lg border-2 border-gray-200">
             <input type="hidden" name="รูปประกอบ-3OLD" id="รูปประกอบ-3OLD">
           </div>
           <div>
-            <label>รูปประกอบ-4</label>
-            <input type="file" id="img4Input" accept="image/*" class="block w-full">
-            <img id="img4Preview" class="hidden w-32 h-20 mt-2 object-cover rounded">
+            <label class="block text-xs font-medium text-gray-700 mb-2">รูปประกอบ-4</label>
+            <input type="file" id="img4Input" accept="image/*" class="block w-full text-xs text-gray-700 file:mr-2 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:bg-[#EB8012] file:text-white hover:file:bg-[#d67010] file:cursor-pointer">
+            <img id="img4Preview" class="hidden w-full h-24 mt-2 object-cover rounded-lg border-2 border-gray-200">
             <input type="hidden" name="รูปประกอบ-4OLD" id="รูปประกอบ-4OLD">
           </div>
         </div>
-        <div><label>รายละเอียด</label><textarea name="รายละเอียด" class="w-full border rounded p-1"></textarea></div>
-        <div><label>รายละเอียด-2</label><textarea name="รายละเอียด-2" class="w-full border rounded p-1"></textarea>
+
+        <div class="mb-4">
+          <label class="block text-xs font-medium text-gray-700 mb-2">รายละเอียด</label>
+          <textarea name="รายละเอียด" rows="3" class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm"></textarea>
         </div>
-        <div>
-          <label>สถานะ</label>
-          <select name="สถานะ" class="w-full border rounded p-1">
+
+        <div class="mb-4">
+          <label class="block text-xs font-medium text-gray-700 mb-2">รายละเอียด-2</label>
+          <textarea name="รายละเอียด-2" rows="3" class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm"></textarea>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-xs font-medium text-gray-700 mb-2">สถานะ</label>
+          <select name="สถานะ" class="w-full border-2 border-gray-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none text-sm">
             <option value="">เลือก...</option>
             <option value="พร้อมบริการ">พร้อมบริการ</option>
             <option value="ไม่พร้อมบริการ">ไม่พร้อมบริการ</option>
           </select>
         </div>
-        <button type="submit" class="w-full bg-green-600 text-white p-2 rounded">บันทึก</button>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-[#EB8012] to-[#ff9933] hover:from-[#d67010] hover:to-[#EB8012] text-white py-3 rounded-lg font-medium transition-all shadow-lg">
+          บันทึก
+        </button>
       </form>
     </section>
 
     <!-- ตารางกิจกรรม -->
-    <section class="bg-white p-4 rounded shadow mt-6">
-      <h2 class="text-lg font-semibold mb-3">รายการกิจกรรม</h2>
+    <section class="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div class="p-5 border-b border-gray-200">
+        <h2 class="text-lg font-bold text-[#0A164D]">รายการกิจกรรม</h2>
+      </div>
       <div id="eventTable" class="overflow-x-auto">
         <!-- ตารางจะถูกเติมด้วย JS -->
       </div>
     </section>
+  </main>
 
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 flex flex-col items-center shadow-2xl">
+      <div class="animate-spin rounded-full h-16 w-16 border-4 border-[#EB8012] border-t-transparent mb-4"></div>
+      <span class="text-[#0A164D] text-lg font-medium">กรุณารอสักครู่...</span>
+    </div>
   </div>
 
   <script>
@@ -144,44 +202,52 @@
     }
 
     function loadEvents() {
-      Swal.fire({ title: 'กำลังโหลด...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+      document.getElementById('loading-overlay').classList.remove('hidden');
       fetch(`${ADDEVENT_URL}?action=fetchData`)
         .then(r => r.json()).then(data => {
           const events = Array.isArray(data) ? data : [];
-          Swal.close();
+          document.getElementById('loading-overlay').classList.add('hidden');
           let html = `
-                <table class="min-w-full text-sm text-center divide-y divide-gray-200">
-                  <thead class="bg-slate-800 text-white">
+                <table class="min-w-full text-sm">
+                  <thead class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white">
                     <tr>
-                      <th class="py-2 px-3">ไอดี</th>
-                      <th class="py-2 px-3">ชื่อ</th>
-                      <th class="py-2 px-3">หมวดหมู่</th>
-                      <th class="py-2 px-3">จำนวน</th>
-                      <th class="py-2 px-3">วันที่</th>
-                      <th class="py-2 px-3">เวลา</th>
-                      <th class="py-2 px-3">ราคา</th>
-                      <th class="py-2 px-3">สถานะ</th>
-                      <th class="py-2 px-3">จัดการ</th>
+                      <th class="py-4 px-4 text-left text-xs font-semibold">ไอดี</th>
+                      <th class="py-4 px-4 text-left text-xs font-semibold">ชื่อ</th>
+                      <th class="py-4 px-4 text-left text-xs font-semibold">หมวดหมู่</th>
+                      <th class="py-4 px-4 text-center text-xs font-semibold">จำนวน</th>
+                      <th class="py-4 px-4 text-left text-xs font-semibold">วันที่</th>
+                      <th class="py-4 px-4 text-left text-xs font-semibold">เวลา</th>
+                      <th class="py-4 px-4 text-center text-xs font-semibold">ราคา</th>
+                      <th class="py-4 px-4 text-center text-xs font-semibold">สถานะ</th>
+                      <th class="py-4 px-4 text-center text-xs font-semibold">จัดการ</th>
                     </tr>
                   </thead>
-                  <tbody class="bg-white text-gray-600">
+                  <tbody class="text-gray-700">
                 `;
 
           events.forEach(ev => {
+            const statusClass = ev['สถานะ'] === 'พร้อมบริการ' 
+              ? 'bg-green-100 text-green-700' 
+              : 'bg-red-100 text-red-700';
+            
             html += `
-                  <tr class="hover:bg-gray-100 border-b">
-                    <td class="py-2 px-3">${ev['ไอดีกิจกรรม']}</td>
-                    <td class="py-2 px-3">${ev['ชื่อ']}</td>
-                    <td class="py-2 px-3">${ev['หมวดหมู่']}</td>
-                    <td class="py-2 px-3">${ev['จำนวนจำกัด']}</td>
-                    <td class="py-2 px-3">${ev['วันที่']}</td>
-                    <td class="py-2 px-3">${ev['เวลา']}</td>
-                    <td class="py-2 px-3">${ev['ราคา']}</td>
-                    <td class="py-2 px-3">${ev['สถานะ']}</td>
-                    <td class="py-2 px-3 space-x-1">
-                      <button class="bg-blue-800 text-white px-2 py-1 rounded-lg hover:underline" onclick="showDetails('${ev['ไอดีกิจกรรม']}')">รายละเอียด</button>
-                      <button class="bg-green-600 text-white px-2 py-1 rounded-lg hover:underline" onclick="editEvent('${ev['ไอดีกิจกรรม']}')">แก้ไข</button>
-                      <button class="bg-red-500 text-white px-2 py-1 rounded-lg  hover:underline" onclick="deleteEvent('${ev['ไอดีกิจกรรม']}')">ลบ</button>
+                  <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td class="py-3 px-4">${ev['ไอดีกิจกรรม']}</td>
+                    <td class="py-3 px-4 font-medium">${ev['ชื่อ']}</td>
+                    <td class="py-3 px-4">${ev['หมวดหมู่']}</td>
+                    <td class="py-3 px-4 text-center">${ev['จำนวนจำกัด']}</td>
+                    <td class="py-3 px-4">${ev['วันที่']}</td>
+                    <td class="py-3 px-4">${ev['เวลา']}</td>
+                    <td class="py-3 px-4 text-center font-medium">${ev['ราคา']} ฿</td>
+                    <td class="py-3 px-4 text-center">
+                      <span class="inline-block px-3 py-1 rounded-full text-xs font-medium ${statusClass}">
+                        ${ev['สถานะ']}
+                      </span>
+                    </td>
+                    <td class="py-3 px-4 text-center">
+                      <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-all mr-1" onclick="showDetails('${ev['ไอดีกิจกรรม']}')">รายละเอียด</button>
+                      <button class="bg-[#EB8012] hover:bg-[#d67010] text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-all mr-1" onclick="editEvent('${ev['ไอดีกิจกรรม']}')">แก้ไข</button>
+                      <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-all" onclick="deleteEvent('${ev['ไอดีกิจกรรม']}')">ลบ</button>
                     </td>
                   </tr>`;
           });
@@ -195,7 +261,7 @@
     document.getElementById('eventForm').addEventListener('submit', function (e) {
       e.preventDefault();
       const ev = {};
-      Swal.fire({ title: 'กำลังบันทึก...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+      document.getElementById('loading-overlay').classList.remove('hidden');
       Promise.all([
         processFilePromise('imgCoverInput', 'รูปภาพOLD', 'รูปภาพBase64', 'รูปภาพMimeType', 'รูปภาพ', ev),
         processFilePromise('img1Input', 'รูปประกอบ-1OLD', 'รูปประกอบ-1Base64', 'รูปประกอบ-1MimeType', 'รูปประกอบ-1', ev),
@@ -206,64 +272,101 @@
         new FormData(this).forEach((v, k) => ev[k] = v);
         fetch(ADDEVENT_URL, { method: 'POST', body: JSON.stringify({ action: 'insertOrUpdate', data: ev }) })
           .then(r => r.json()).then(res => {
-            Swal.close(); Swal.fire({ icon: 'success', title: 'บันทึกแล้ว', timer: 1000, showConfirmButton: false });
-            this.reset(); hideForm(); loadEvents();
+            document.getElementById('loading-overlay').classList.add('hidden');
+            Swal.fire({ icon: 'success', title: 'บันทึกแล้ว', timer: 1500, showConfirmButton: false });
+            this.reset();
+            ['imgCoverPreview', 'img1Preview', 'img2Preview', 'img3Preview', 'img4Preview'].forEach(id => {
+              document.getElementById(id).classList.add('hidden');
+            });
+            hideForm();
+            loadEvents();
           });
       });
     });
 
     function showDetails(id) {
-      Swal.fire({
-        title: 'Loading...',
-        didOpen: () => Swal.showLoading(),
-        allowOutsideClick: false
-      });
+      document.getElementById('loading-overlay').classList.remove('hidden');
       fetch(`${ADDEVENT_URL}?action=fetchData`)
         .then(r => r.json())
         .then(data => {
-          Swal.close();
+          document.getElementById('loading-overlay').classList.add('hidden');
           const ev = (Array.isArray(data) ? data : []).find(x => x['ไอดีกิจกรรม'] === id);
           if (!ev) return;
 
           // สร้าง HTML
-          let html = '';
+          let html = '<div class="text-left">';
+          
           // 1) รูปภาพ 5 คอลัมน์
-          html += `<div class="grid grid-cols-5 gap-2 mb-4">`;
+          html += `<div class="grid grid-cols-5 gap-3 mb-6">`;
           ['รูปภาพ', 'รูปประกอบ-1', 'รูปประกอบ-2', 'รูปประกอบ-3', 'รูปประกอบ-4'].forEach(field => {
             if (ev[field]) {
-              html += `<div><img src="${ev[field]}" class="w-full h-24 object-cover rounded" alt="${field}"></div>`;
+              html += `<div><img src="${ev[field]}" class="w-full h-32 object-cover rounded-lg border-2 border-gray-200 shadow-sm" alt="${field}"></div>`;
             } else {
-              html += `<div class="flex items-center justify-center h-24 bg-gray-100 text-gray-400 rounded">ไม่มี</div>`;
+              html += `<div class="flex items-center justify-center h-32 bg-gray-100 text-gray-400 rounded-lg border-2 border-gray-200">ไม่มีรูป</div>`;
             }
           });
           html += `</div>`;
 
           // 2) ข้อมูลข้อความ
-          html += `<div class="space-y-2 text-left text-sm">`;
-          ['ชื่อ', 'หมวดหมู่', 'จำนวนจำกัด', 'วันที่', 'เวลา', 'ราคา', 'สถานะ'].forEach(k => {
-            html += `<p><strong>${k}:</strong> ${ev[k] || ''}</p>`;
+          html += `<div class="grid grid-cols-2 gap-x-6 gap-y-3 mb-4">`;
+          [
+            ['ชื่อ', ev['ชื่อ'] || ''],
+            ['หมวดหมู่', ev['หมวดหมู่'] || ''],
+            ['จำนวนจำกัด', ev['จำนวนจำกัด'] || ''],
+            ['วันที่', ev['วันที่'] || ''],
+            ['เวลา', ev['เวลา'] || ''],
+            ['ราคา', `${ev['ราคา'] || ''} บาท`],
+            ['สถานะ', ev['สถานะ'] || '']
+          ].forEach(([label, value]) => {
+            const statusClass = label === 'สถานะ' && value === 'พร้อมบริการ' 
+              ? 'inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium'
+              : label === 'สถานะ'
+              ? 'inline-block px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium'
+              : 'text-gray-800 font-medium';
+            
+            html += `<div class="border-b border-gray-100 pb-2">
+              <span class="text-xs text-gray-500">${label}:</span><br>
+              <span class="${statusClass}">${value}</span>
+            </div>`;
           });
-          html += `<p><strong>รายละเอียด:</strong><br>${ev['รายละเอียด'] || ''}</p>`;
-          html += `<p><strong>รายละเอียด-2:</strong><br>${ev['รายละเอียด-2'] || ''}</p>`;
           html += `</div>`;
+
+          // รายละเอียด
+          if (ev['รายละเอียด']) {
+            html += `<div class="bg-blue-50 p-4 rounded-lg mb-3">
+              <div class="text-xs font-semibold text-gray-600 mb-2">รายละเอียด:</div>
+              <div class="text-sm text-gray-700">${ev['รายละเอียด']}</div>
+            </div>`;
+          }
+          
+          if (ev['รายละเอียด-2']) {
+            html += `<div class="bg-green-50 p-4 rounded-lg">
+              <div class="text-xs font-semibold text-gray-600 mb-2">รายละเอียด-2:</div>
+              <div class="text-sm text-gray-700">${ev['รายละเอียด-2']}</div>
+            </div>`;
+          }
+          
+          html += '</div>';
 
           // แสดง
           Swal.fire({
-            title: 'รายละเอียดกิจกรรม',
+            title: '<span style="color: #0A164D;">รายละเอียดกิจกรรม</span>',
             html: html,
-            width: 700,
-            showConfirmButton: true
+            width: 900,
+            showConfirmButton: true,
+            confirmButtonColor: '#EB8012',
+            confirmButtonText: 'ปิด'
           });
         });
     }
 
 
     function editEvent(id) {
-      Swal.fire({ title: 'Loading...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+      document.getElementById('loading-overlay').classList.remove('hidden');
       fetch(`${ADDEVENT_URL}?action=fetchData`)
         .then(r => r.json())
         .then(data => {
-          Swal.close();
+          document.getElementById('loading-overlay').classList.add('hidden');
           const ev = data.find(x => x['ไอดีกิจกรรม'] === id);
           if (ev) {
             const form = document.getElementById('eventForm');
@@ -294,11 +397,24 @@
 
 
     function deleteEvent(id) {
-      Swal.fire({ title: 'ลบหรือไม่?', showCancelButton: true }).then(res => {
+      Swal.fire({ 
+        title: 'ยืนยันการลบ?',
+        text: 'คุณต้องการลบกิจกรรมนี้หรือไม่?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#EB8012',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'ลบ',
+        cancelButtonText: 'ยกเลิก'
+      }).then(res => {
         if (res.isConfirmed) {
-          Swal.fire({ title: 'Deleting...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+          document.getElementById('loading-overlay').classList.remove('hidden');
           fetch(ADDEVENT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', id }) })
-            .then(r => r.json()).then(r => { Swal.close(); Swal.fire({ icon: 'success', title: 'ลบแล้ว', timer: 1000, showConfirmButton: false }); loadEvents(); });
+            .then(r => r.json()).then(r => { 
+              document.getElementById('loading-overlay').classList.add('hidden');
+              Swal.fire({ icon: 'success', title: 'ลบแล้ว', timer: 1500, showConfirmButton: false }); 
+              loadEvents(); 
+            });
         }
       });
     }
