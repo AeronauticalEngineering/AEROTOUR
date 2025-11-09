@@ -39,7 +39,7 @@
     async function submitConfirm(status, id) {
       document.getElementById("loadingOverlay").classList.remove("hidden");
 
-      const apiUrl = `https://script.google.com/macros/s/AKfycbxmVGoMjXzA8lvBOKpFAXyPCEj4q9nl1MsL_i_691NynRpDXVnbvBYFftgD7l2iSUw/exec`
+      const apiUrl = `https://script.google.com/macros/s/AKfycbz-fvuVKNQ9XNBQsEqM-KNSkqQecGTUxqlf-QqJ5YKPpKb49l0zj1Lr8JUQcGGkmdrL3Q/exec`
                    + `?method=updateConfirmData&id=${encodeURIComponent(id)}&confirmStatus=${encodeURIComponent(status)}`;
       try {
         await fetch(apiUrl);
