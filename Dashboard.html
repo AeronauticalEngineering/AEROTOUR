@@ -94,6 +94,7 @@
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">สถานะการชำระเงิน</label>
           <select id="update-payment-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none transition-all">
+            <option value="">-- เลือกสถานะ --</option>
             <option value="ชำระเงินแล้ว">ชำระเงินแล้ว</option>
             <option value="รอการชำระเงิน">รอการชำระเงิน</option>
             <option value="แจ้งส่งหลักฐาน">แจ้งส่งหลักฐาน</option>
@@ -120,6 +121,7 @@
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">สถานะแจ้งเข้าร่วม</label>
           <select id="update-join-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none transition-all">
+            <option value="">-- เลือกสถานะ --</option>
             <option value="แจ้งแล้ว">แจ้งแล้ว</option>
             <option value="ยังไม่แจ้ง">ยังไม่แจ้ง</option>
           </select>
@@ -143,6 +145,7 @@
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">สถานะยืนยัน</label>
           <select id="update-confirm-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none transition-all">
+            <option value="">-- เลือกสถานะ --</option>
             <option value="ยืนยันแล้ว">ยืนยันแล้ว</option>
             <option value="ยกเลิก">ยกเลิก</option>
           </select>
@@ -166,6 +169,7 @@
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">สถานะแจ้งเข้าร่วม</label>
           <select id="update-group-join-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-all transition-all">
+            <option value="">-- เลือกสถานะ --</option>
             <option value="แจ้งแล้ว">แจ้งแล้ว</option>
             <option value="ยังไม่แจ้ง">ยังไม่แจ้ง</option>
           </select>
@@ -189,6 +193,7 @@
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">สถานะกิจกรรม</label>
           <select id="update-group-confirm-select" class="w-full border-2 border-gray-300 px-4 py-3 rounded-lg focus:ring-2 focus:ring-[#EB8012] focus:border-transparent outline-none transition-all">
+            <option value="">-- เลือกสถานะ --</option>
             <option value="เปิดกิจกรรม">เปิดกิจกรรม</option>
             <option value="จบกิจกรรม">จบกิจกรรม</option>
             <option value="ยกเลิก">ยกเลิกกิจกรรม</option>
@@ -201,7 +206,24 @@
       </form>
     </div>
   </div>
-  <!-- 6) Edit Modal -->
+
+  <!-- 6) Update Group Payment -->
+  <div id="update-group-payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl transform transition-all">
+      <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-5 rounded-t-2xl">
+        <h2 class="text-lg font-bold">แจ้งส่งหลักฐานการชำระเงิน (กลุ่ม)</h2>
+      </div>
+      <div class="p-5">
+        <p class="text-sm text-gray-600 mb-4">ต้องการแจ้งให้ทุกคนในกลุ่มนี้ส่งหลักฐานการชำระเงินหรือไม่?</p>
+        <div class="flex gap-3">
+          <button type="button" onclick="closeGroupPaymentModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-3 rounded-lg font-medium transition-all">ยกเลิก</button>
+          <button type="button" onclick="confirmGroupPayment()" class="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white px-4 py-3 rounded-lg font-medium transition-all shadow-lg">ยืนยัน</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7) Edit Modal -->
   <div id="edit-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
     <div class="bg-white rounded-2xl w-full max-w-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
       <div class="bg-gradient-to-r from-[#0A164D] to-[#1a2d6b] text-white p-5">
@@ -444,6 +466,9 @@ function stopLoading() {
           <button class="flex-1 bg-[#EB8012] hover:bg-[#d67010] text-white py-2.5 px-3 rounded-lg text-sm font-medium transition-all" onclick="openGroupJoinModal('${eid}')">
             แจ้งยืนยัน
           </button>
+          <button class="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white py-2.5 px-3 rounded-lg text-sm font-medium transition-all" onclick="openGroupPaymentModal('${eid}')">
+            แจ้งส่งหลักฐาน
+          </button>
           <button class="flex-1 bg-white/20 hover:bg-white/30 text-white py-2.5 px-3 rounded-lg text-sm font-medium transition-all" onclick="openGroupConfirmModal('${eid}')">
             จัดการกิจกรรม
           </button>
@@ -633,7 +658,12 @@ function toggleDetailsInGroup(id, btn) {
 }
 
     // Modal functions & AJAX calls (เหมือนเดิม)
-    function openPaymentModal(id) { $('#payment-update-id').val(id); $('#update-payment-select').val(tableData.find(x => x.id === id).payment); $('#update-payment-modal').removeClass('hidden'); }
+    function openPaymentModal(id) { 
+      $('#payment-update-id').val(id); 
+      const currentPayment = tableData.find(x => x.id === id).payment;
+      $('#update-payment-select').val(currentPayment || ''); 
+      $('#update-payment-modal').removeClass('hidden'); 
+    }
     function closePaymentModal() { $('#update-payment-modal').addClass('hidden'); }
     $('#update-payment-form').on('submit', e => {
       e.preventDefault(); startLoading();
@@ -644,7 +674,12 @@ function toggleDetailsInGroup(id, btn) {
         .always(stopLoading);
     });
 
-    function openJoinModal(id) { $('#join-update-id').val(id); $('#update-join-select').val(tableData.find(x => x.id === id).joinStatus); $('#update-join-modal').removeClass('hidden'); }
+    function openJoinModal(id) { 
+      $('#join-update-id').val(id); 
+      const currentJoin = tableData.find(x => x.id === id).joinStatus;
+      $('#update-join-select').val(currentJoin || ''); 
+      $('#update-join-modal').removeClass('hidden'); 
+    }
     function closeJoinModal() { $('#update-join-modal').addClass('hidden'); }
     $('#update-join-form').on('submit', e => {
       e.preventDefault(); startLoading();
@@ -655,7 +690,12 @@ function toggleDetailsInGroup(id, btn) {
         .always(stopLoading);
     });
 
-    function openConfirmModal(id) { $('#confirm-update-id').val(id); $('#update-confirm-select').val(tableData.find(x => x.id === id).confirmStatus); $('#update-confirm-modal').removeClass('hidden'); }
+    function openConfirmModal(id) { 
+      $('#confirm-update-id').val(id); 
+      const currentConfirm = tableData.find(x => x.id === id).confirmStatus;
+      $('#update-confirm-select').val(currentConfirm || ''); 
+      $('#update-confirm-modal').removeClass('hidden'); 
+    }
     function closeConfirmModal() { $('#update-confirm-modal').addClass('hidden'); }
     $('#update-confirm-form').on('submit', e => {
       e.preventDefault(); startLoading();
@@ -666,7 +706,11 @@ function toggleDetailsInGroup(id, btn) {
         .always(stopLoading);
     });
 
-    function openGroupJoinModal(eid) { $('#group-join-update-id').val(eid); $('#update-group-join-select').val('แจ้งแล้ว'); $('#update-group-join-modal').removeClass('hidden'); }
+    function openGroupJoinModal(eid) { 
+      $('#group-join-update-id').val(eid); 
+      $('#update-group-join-select').val(''); 
+      $('#update-group-join-modal').removeClass('hidden'); 
+    }
     function closeGroupJoinModal() { $('#update-group-join-modal').addClass('hidden'); }
     $('#update-group-join-form').on('submit', e => {
       e.preventDefault(); startLoading();
@@ -677,7 +721,11 @@ function toggleDetailsInGroup(id, btn) {
         .always(stopLoading);
     });
 
-    function openGroupConfirmModal(eid) { $('#group-confirm-update-id').val(eid); $('#update-group-confirm-select').val('ยืนยันแล้ว'); $('#update-group-confirm-modal').removeClass('hidden'); }
+    function openGroupConfirmModal(eid) { 
+      $('#group-confirm-update-id').val(eid); 
+      $('#update-group-confirm-select').val(''); 
+      $('#update-group-confirm-modal').removeClass('hidden'); 
+    }
     function closeGroupConfirmModal() { $('#update-group-confirm-modal').addClass('hidden'); }
     $('#update-group-confirm-form').on('submit', e => {
       e.preventDefault(); startLoading();
@@ -687,6 +735,23 @@ function toggleDetailsInGroup(id, btn) {
         .fail(() => Swal.fire('Error', 'ไม่สำเร็จ', 'error'))
         .always(stopLoading);
     });
+
+    function openGroupPaymentModal(eid) {
+      $('#update-group-payment-modal').data('eventId', eid);
+      $('#update-group-payment-modal').removeClass('hidden');
+    }
+    function closeGroupPaymentModal() {
+      $('#update-group-payment-modal').addClass('hidden');
+    }
+    function confirmGroupPayment() {
+      const eventId = $('#update-group-payment-modal').data('eventId');
+      startLoading();
+      $.post(ADMIN_URL, { method: 'updateGroupPaymentData', eventId })
+        .done(() => { Swal.fire('สำเร็จ', 'แจ้งส่งหลักฐานการชำระเงินกลุ่มเรียบร้อย', 'success'); fetchData(); closeGroupPaymentModal(); })
+        .fail(() => Swal.fire('Error', 'ไม่สำเร็จ', 'error'))
+        .always(stopLoading);
+    }
+
     // แก้ไข
     function openEditModal(id) {
       const it = tableData.find(x => x.id === id);
